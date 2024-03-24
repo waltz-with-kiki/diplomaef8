@@ -1,0 +1,152 @@
+.popup-container {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 10px; 
+  }
+  
+  .popup-container.show {
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    
+    .popup-container {
+      width: 80%;
+      
+    }
+  }
+
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .page {
+    clear: both;
+    opacity: 1;
+  }
+  
+  .left-section {
+    float: left;
+  width: 50%; 
+  }
+  
+  .right-section {
+    float: right; 
+  width: 50%; 
+  }
+
+  .formversion{
+    
+    display: flex;
+  }
+
+  .formversion.left{
+    float: left;
+    display: flex;
+    width: 50%;
+  }
+  .formversion.right{
+    
+    display: flex;
+    float: right;
+    width: 50%;
+  }
+
+  
+  .list{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 500px;
+    padding: 5px;
+    max-height: 195px; 
+    overflow-y: auto; 
+  }
+
+  .button-container {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.span{
+  display: flex;
+  width: 20px;
+  margin-top: 4%;
+  font-size: 20px;
+}
+
+  .project {
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    padding: "15px";
+    border-radius: 3px;
+    border: 1px solid;
+  flex-direction: row;
+}
+
+.button1{
+  background-color:aliceblue;
+  min-width: 100px;
+  border-radius: 3px;
+  margin: 3px;
+}
+
+.page2{
+  clear: both;
+}
+
+.searchexpert{
+  display: flex;
+}
+
+.expertcomm{
+  display: flex;
+  justify-content: left;
+  margin-top: 100px;
+}
+
+.table-container {
+  margin-top: 10px;
+  width: 50%;
+  border-collapse: collapse;
+}
+
+.table-container table {
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-container th {
+  background-color: #f2f2f2;
+}
+
+.ExpertPanel{
+  display: flex;
+}
+
+.ExpertPanel.left{
+  width: 70%;
+}
+
+.ExpertPanel.right{
+  border: 1px solid salmon;
+  padding: 10px;
+  border-radius: 5px;
+  width: 50%;
+}
