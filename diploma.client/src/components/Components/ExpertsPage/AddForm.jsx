@@ -1,25 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyModal from "../UI/MyModal/MyModal";
 import MyInput from "../UI/MyInput";
 import MyButton from "../UI/MyButton";
 import MySelect from "../UI/MySelect/MySelect";
 import AircraftTypeItem from "./AircraftTypeItem";
 
-const AddForm = ({addModule, setAddModule, aircrafttypes, AddnewExpert}) => {
+const AddForm = ({addModule, setAddModule, aircrafttypes, AddChangeExpert, ChangeExpert}) => {
 
 
-    const [newExpert , setNewExpert] = useState({name: "", surname: "", patronymic: "", birthYear: "", serviceYear: "", flightHours: "", pilotClass: '1', educationNavigation: 'secondary', expertAircraftTypes: []})
+    const [newExpert , setNewExpert] = useState({name: "", surname: "", patronymic: "", birthYear: "", serviceYear: "", flightHours: "", pilotClass: '1', educationNavigation: '1', expertAircraftTypes: []})
 
+
+    useEffect(() =>{
+        console.log(ChangeExpert);
+        if(ChangeExpert){
+            const modifiedExpert = {
+                ...ChangeExpert,
+                educationNavigation: ChangeExpert.educationNavigation.id,
+                expertAircraftTypes: ChangeExpert.aircraftTypes.map(aircraftType => aircraftType.name)
+            };
+            setSelectedAircraftTypes(modifiedExpert.expertAircraftTypes)
+            setNewExpert(modifiedExpert);
+        }
+
+    }, [ChangeExpert])
 
     const [selectedAircraftTypes, setSelectedAircraftTypes] = useState([]);
 
-    const handleAddnewExpert = (e) =>{
+    const handleAddChangeExpert = (e) =>{
         e.preventDefault();
         const UpdateExpert = {
             ...newExpert,
             expertAircraftTypes: selectedAircraftTypes
         }
-        AddnewExpert(UpdateExpert);
+        AddChangeExpert(UpdateExpert);
         setSelectedAircraftTypes([]);
         setNewExpert({name: "", surname: "", patronymic: "", birthYear: "", serviceYear: "", flightHours: "", pilotClass: '1', educationNavigation: 'secondary', expertAircraftTypes: [] });
     }
@@ -82,7 +96,7 @@ const AddForm = ({addModule, setAddModule, aircrafttypes, AddnewExpert}) => {
             
             <MyButton>Добавить тип ЛА в БД</MyButton>
             <MyButton>Удалить тип ЛА из БД</MyButton>
-            <MyButton onClick={handleAddnewExpert}>Добавить эксперта</MyButton>
+            <MyButton onClick={handleAddChangeExpert}>Добавить эксперта</MyButton>
             </MyModal>        
         </div>
     );

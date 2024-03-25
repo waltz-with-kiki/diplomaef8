@@ -268,6 +268,11 @@ namespace try2.Controllers
 
         }
 
+        public record ChangeExpertId : NewExpert
+        {
+            public long Id { get; set; }
+        }
+
         [HttpPost("addexpert")]
         public IActionResult AddExpert([FromBody] NewExpert newexpert)
         {
@@ -324,6 +329,61 @@ namespace try2.Controllers
             }
 
             _RepExperts.Remove(expert.Id);
+
+            return Ok();
+        }
+
+
+        [HttpPost("changeexpert")]
+        public IActionResult ChangeExpert([FromBody] ChangeExpertId newexpert)
+        {
+            if (newexpert == null || newexpert.Name == null || newexpert.Surname == null || newexpert.Patronymic == null)
+            {
+                return BadRequest(new { ErrorMessage = "Некорретные данные" });
+            }
+
+            var checkexp = _RepExperts.Items.Where(x => x.Id == newexpert.Id).FirstOrDefault();
+            if(checkexp == null)
+            {
+                return BadRequest(new { ErrorMessage = "Эксперта не удалось найти" });
+            }
+
+            //Console.WriteLine("Всё окей!");
+
+            checkexp.Surname = newexpert.Surname;
+            checkexp.Name = newexpert.Name;
+            checkexp.Patronymic = newexpert.Patronymic;
+            checkexp.BirthYear = newexpert.BirthYear;
+            checkexp.ServiceYear = newexpert.ServiceYear;
+            checkexp.FlightHours = newexpert.FlightHours;
+            checkexp.Education = newexpert.Education;
+            checkexp.PilotClass = newexpert.PilotClass;
+
+            foreach (var oldAircraftType in checkexp.AircraftTypes.ToList())
+            {
+                if (!newexpert.AircraftTypes.Contains(oldAircraftType.Name))
+                {
+                    checkexp.AircraftTypes.Remove(oldAircraftType);
+                }
+            }
+
+            foreach (var aircraftType in newexpert.AircraftTypes)
+            {
+                if (!checkexp.AircraftTypes.Any(x => x.Name == aircraftType))
+                {
+                    var thisaircrafttype = _RepAircraftTypes.Items.FirstOrDefault(x => x.Name == aircraftType);
+                    if (thisaircrafttype != null)
+                    {
+                        checkexp.AircraftTypes.Add(thisaircrafttype);
+                    }
+                    else
+                    {
+                        return BadRequest(new { ErrorMessage = "Не найден тип ЛА" });
+                    }
+                }
+            }
+
+            _RepExperts.Update(checkexp);
 
             return Ok();
         }

@@ -195,17 +195,14 @@ public partial class AirplanesDbContext : DbContext
             entity.Property(e => e.FlightHours).HasColumnName("flight_hours");
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
-                .IsFixedLength()
                 .HasColumnName("name");
             entity.Property(e => e.Patronymic)
                 .HasMaxLength(32)
-                .IsFixedLength()
                 .HasColumnName("patronymic");
             entity.Property(e => e.PilotClass).HasColumnName("pilot_class");
             entity.Property(e => e.ServiceYear).HasColumnName("service_year");
             entity.Property(e => e.Surname)
                 .HasMaxLength(32)
-                .IsFixedLength()
                 .HasColumnName("surname");
 
             entity.HasOne(d => d.EducationNavigation).WithMany(p => p.Experts)

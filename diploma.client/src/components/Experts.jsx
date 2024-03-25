@@ -14,6 +14,7 @@ const Experts = () => {
     const [selectedExpert, setSelectedExpert] = useState(null);
     const [searchExpert, setSearchExpert] = useState("");
     const [addModule, setAddModule] = useState(false);
+    const [changeForm, setchangeForm] = useState(false);
 
     useEffect (() =>{
 
@@ -53,11 +54,12 @@ const Experts = () => {
     }, [searchExpert, Experts])
 
 
-    const ShowAddModule = () => {
+    const ShowAddModule = (changemodal) => {
+        setchangeForm(changemodal);
         setAddModule(true);
     }
 
-    const CheckNewExpert = (newexpert) => {
+    const CheckAddNewExpert = (newexpert) => {
         console.log(newexpert);
         if(newexpert.name == '' || newexpert.surname == '' || newexpert.patronymic == '' || newexpert.BirthYear == '' )
         {
@@ -90,6 +92,39 @@ const Experts = () => {
         setAddModule(false);
     }
 
+    const CheckChangeExpert = (changeexpert) =>{
+        if(changeexpert.name == '' || changeexpert.surname == '' || changeexpert.patronymic == '' || changeexpert.BirthYear == '' )
+        {
+            console.log("Неправильно заданы данные эксперта");
+        }
+
+        Changexpert(changeexpert);
+    }
+
+    const Changexpert = async (changeexpert) => {   
+        const response = await fetch('https://localhost:7006/api/project/changeexpert',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    Id: selectedExpert.id,
+                    Surname: changeexpert.surname, 
+                    Name: changeexpert.name, 
+                    Patronymic: changeexpert.patronymic,
+                    BirthYear: changeexpert.birthYear,
+                    ServiceYear: changeexpert.serviceYear,
+                    FlightHours: changeexpert.flightHours,
+                    Education: changeexpert.educationNavigation,
+                    PilotClass: changeexpert.pilotClass,
+                    AircraftTypes: changeexpert.expertAircraftTypes,
+                  }),
+                });
+    
+    fetchExperts()
+    setAddModule(false);
+}
+
+
     const CheckRemoveExpert = () => {
         console.log(selectedExpert);
         if (selectedExpert){
@@ -120,8 +155,8 @@ const Experts = () => {
             <MyInput placeholder="Поиск.." value={searchExpert} onChange={e => setSearchExpert(e.target.value)} ></MyInput>
             </div>
             <div className="expertcomm">
-              <MyButton onClick={ShowAddModule} className="button1">Добавить</MyButton>
-              <MyButton className="button1">Изменить</MyButton>
+            <MyButton onClick={() => ShowAddModule(true)} className="button1">Добавить</MyButton>
+              <MyButton onClick={() => selectedExpert ? ShowAddModule(false) : () =>{}}className="button1">Изменить</MyButton>
               <MyButton onClick={CheckRemoveExpert} className="button1">Удалить</MyButton>
             </div>
             
@@ -135,7 +170,15 @@ const Experts = () => {
                 </div>
 
                 <div>
-                    <AddForm aircrafttypes={AircraftTypes} addModule={addModule} setAddModule={setAddModule} AddnewExpert={CheckNewExpert}></AddForm>
+                    {addModule &&(
+                        <div>
+                            {changeForm 
+                            ?(<AddForm aircrafttypes={AircraftTypes} addModule={addModule} setAddModule={setAddModule} AddChangeExpert={CheckAddNewExpert}></AddForm>)
+                            : (<AddForm aircrafttypes={AircraftTypes} addModule={addModule} setAddModule={setAddModule} AddChangeExpert={CheckChangeExpert} ChangeExpert={selectedExpert}></AddForm>)}
+                            </div>
+
+                    )}
+                    
                 </div>
     </div>
     );
