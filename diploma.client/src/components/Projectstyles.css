@@ -216,6 +216,15 @@
   z-index: 1;
 }
 
+.template-actions-module{
+  display: flex;
+  position: relative;
+  margin-top: 10px;
+}
+.template-actions-module > *{
+  margin-right: 10px;
+}
+
 
 .evaluation-module {
   position: relative;
@@ -260,7 +269,7 @@
 
 @media only screen and (min-width: 600px) {
   .setting-module {
-      width: 90%; /* Уменьшаем ширину контейнера на мобильных устройствах */
+      width: 100%;
       margin: 0 auto; /* Центрируем контейнер по горизонтали */
       margin-top: 20px;
   }

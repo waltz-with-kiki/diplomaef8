@@ -48,6 +48,10 @@ export default defineConfig({
             '^/project': {
                 target,
                 secure: false
+            },
+            '^/examinationtemplates': {
+                target,
+                secure: false
             }
         },
         port: 5173,
