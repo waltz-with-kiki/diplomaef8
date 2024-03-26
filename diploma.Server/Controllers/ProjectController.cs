@@ -32,9 +32,9 @@ namespace try2.Controllers
         }
 
         [HttpGet("projects")]
-        public ICollection<Project> Get()
+        public async Task<ICollection<Project>> Get()
         {
-            return _RepProjects.Items.Include(p => p.Versions).ToList();
+            return await _RepProjects.Items.ToListAsync();
         }
 
         
