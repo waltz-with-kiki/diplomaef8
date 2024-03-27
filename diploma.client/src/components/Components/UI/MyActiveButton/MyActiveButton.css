@@ -1,0 +1,18 @@
+.preparationpage-my-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2px solid #007bff;
+    border-radius: 20px;
+  }
+  
+  .preparationpage-my-button.active {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+  }

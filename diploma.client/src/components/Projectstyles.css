@@ -76,6 +76,12 @@
     align-items: center;
   }
 
+  .button-container h1 {
+    margin-right: 20px; 
+    font-size: 24px; 
+    color: #333; 
+  }
+
 .span{
   display: flex;
   width: 20px;
@@ -112,7 +118,7 @@
 .expertcomm{
   display: flex;
   justify-content: left;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .table-container {
@@ -154,6 +160,7 @@
 .template-container {
   width: 70%;
   position: relative;
+  margin-top: 10px;
 }
 
 
@@ -330,13 +337,30 @@
   }
 }
 
+
 .template-leftmodule,
 .template-rightmodule {
-    flex: 1; /* Оба блока занимают равную ширину */
+  flex: 1; /* Оба блока занимают равную ширину */
 }
 
-.template-row {
-    margin-bottom: 10px; /* Отступ между строками */
+
+
+.input-row-reverse {
+  margin-top: 5px;
+  display: flex;
+  align-items: center; /* Выравнивание элементов по вертикали */
+  justify-content: flex-end; /* Распределение элементов вправо */
+  flex-direction: row-reverse; /* Изменение порядка элементов на обратный */
 }
 
+.template-row,
+.checkbox-row {
+  margin-top: 5px; /* Добавим одинаковый отступ между строками */
+}
+
+.preparationpage-buttons-container{
+  display: flex;
+  position: relative;
+  margin-bottom: 10px;
+}
 

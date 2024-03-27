@@ -25,6 +25,7 @@ const ExpertsList = ({Experts, onSelect, ...props}) => {
                 <tbody>
                     {Experts.map((expert) =>(
                         <ExpertItem
+                        key={expert.id}
                         item = {expert}
                         onSelect={() => handleExpertClick(expert)}
                         isSelected={expert === selectedExpert}

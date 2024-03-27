@@ -112,6 +112,8 @@ const Project = () => {
 
     //setProjects((prevProjects) => [...prevProjects, Project]);
     fetchProjects();
+    console.log(selectedProject);
+    setSelectedProject(null);
     setNewProject({ name: '' });
   }
 
