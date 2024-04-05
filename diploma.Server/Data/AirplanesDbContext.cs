@@ -70,9 +70,9 @@ public partial class AirplanesDbContext : DbContext
 
     //26 xd
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=airplanesDB;Username=postgres;Password=1234");
+        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=airplanesDB;Username=postgres;Password=1234");*/
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -167,7 +167,6 @@ public partial class AirplanesDbContext : DbContext
             entity.Property(e => e.Descr).HasColumnName("descr");
             entity.Property(e => e.Name)
                 .HasMaxLength(128)
-                .IsFixedLength()
                 .HasColumnName("name");
             entity.Property(e => e.Qrhmi).HasColumnName("qrhmi");
             entity.Property(e => e.Qrim).HasColumnName("qrim");

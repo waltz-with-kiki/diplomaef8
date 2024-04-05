@@ -4,34 +4,78 @@ import SettingsItem from "./SettingsItem";
 import MyButton from "../UI/MyButton";
 import MyInput from "../UI/MyInput";
 import CheckboxWithLabel from "./CheckboxWithLabel";
-import ButtonWithInput from "./ButtonWithInput";
 import SpanWithSelect from "./SpanWithSelect";
+import MyModal from "../UI/MyModal/MyModal";
 
 
-const TemplateDetails = ({template, ...props}) => {
+const TemplateDetails = ({template, openHmi, openIm, setIsOpenModule, AddNewTemplate, RemoveTemplate, ...props}) => {
 
-    const [acceptedTemplatename, setAcceptedTemplateName] = useState({name: '', qrmi: {}, qrhmi: {}});
-    const [templatename, setTemplateName] = useState('');  
+    const [acceptedTemplatename, setAcceptedTemplateName] = useState({name: '', qrim: {}, qrhmi: {}});
+    const [removeTemplate, setRemoveTemplate] = useState(false);
+    const [moduleTemplateToRemove, setModuleTemplateToRemove] = useState(null);
 
 
     useEffect(() =>{
         if(template !== null){
-        setAcceptedTemplateName({name: template.name, qrmi: template.qrmiNavigation, qrhmi: template.qrhmiNavigation})
+        setAcceptedTemplateName({name: template.name, qrim: template.qrimNavigation, qrhmi: template.qrhmiNavigation})
         }
     }, [template]);
+
+    const handleAddTemplate = () =>{
+        AddNewTemplate(acceptedTemplatename);
+    }
+
+    const handleRemoveTemplate = () =>{
+        RemoveTemplate(acceptedTemplatename);
+        setRemoveTemplate(false);
+        setAcceptedTemplateName({name: '', qrim: null, qrhmi: null})
+    }
+
+    const handleChangeHmi = (value) => {
+        setAcceptedTemplateName({...acceptedTemplatename, qrhmi: value})
+    }
+    const handleChangeIm = (value) => {
+        setAcceptedTemplateName({...acceptedTemplatename, qrim: value})
+    }
+
+
+
+    const handleRemoveTemplateClick = (templateName) => {
+        setModuleTemplateToRemove(templateName); 
+        setRemoveTemplate(true); 
+    }
+
+
+    const handleCancelRemoveTemplate = () => {
+        setRemoveTemplate(false);
+        setModuleTemplateToRemove(null);
+    }
 
     return(
         <div>
 
+
+            <div className="template-actions-module">
+                <MyButton onClick={handleAddTemplate} className="button1">Сохранить</MyButton>
+                <MyButton onClick={e => setIsOpenModule(true)} className="button1">Открыть</MyButton>
+                <MyButton onClick={e => handleRemoveTemplateClick(acceptedTemplatename.name)}className="button1">Удалить</MyButton>
+            </div>
+
         <div className="template-container">
-            <MyInput type="template" className="template-input" value={acceptedTemplatename.name} onChange={(e) => setAcceptedTemplateName({...acceptedTemplatename, [acceptedTemplatename.name]: e.target.value})} required/>
+            <MyInput type="template" className="template-input" value={acceptedTemplatename.name} onChange={(e) => setAcceptedTemplateName({...acceptedTemplatename, name: e.target.value})} required/>
             <label className="template-label">Название шаблона:</label>
             </div>
 
         <div className="evaluation-module">
                 <label>Настройка модулей оценки:</label>
-                <ButtonWithInput button={"Экспертная оценка ИМ"} placeholder={"Наименование анкеты"} inputtitle={acceptedTemplatename.qrhmi && acceptedTemplatename.qrhmi.name} className="input-row"></ButtonWithInput>
-                <ButtonWithInput button={"Экспертная оценка ЧМИ"} placeholder={"Наименование анкеты"} inputtitle={acceptedTemplatename.qrhmi && acceptedTemplatename.qrhmi.name} className="input-row"></ButtonWithInput>
+                <div className="input-row">
+            <MyButton onClick={openIm} className="button1">Экспертная оценка ИМ</MyButton>
+            <MyInput placeholder={"Наименование анкеты"} style={{width: "100%"}} value={(acceptedTemplatename.qrhmi && acceptedTemplatename.qrhmi.name || '')} onChange={e => handleChangeHmi(e.target.value)} readOnly required></MyInput>
+        </div>
+        <div className="input-row">
+            <MyButton onClick={openHmi} className="button1" >Экспертная оценка ЧМИ</MyButton>
+            <MyInput placeholder={"Наименование анкеты"} style={{width: "100%"}} value={(acceptedTemplatename.qrim && acceptedTemplatename.qrim.name) || ''} onChange={e => handleChangeIm(e.target.value)} readOnly required></MyInput>
+        </div>
             </div>
 
         <div className="setting-module">
@@ -39,11 +83,15 @@ const TemplateDetails = ({template, ...props}) => {
 
                 <SettingsItem u={"КММ"} button={"+"}></SettingsItem>
 
-                <div className="template-leftrightmodule">   
+                <div className="template-leftrightmodule">
 
 
-            <div className="template-leftmodule">
-                <ButtonWithInput button={"..."} placeholder={"Файл БД моделей"} stylebutton={{width: "200px"}} className="input-row-reverse"></ButtonWithInput>
+            <div className="template-leftmodule">            
+                <div className="input-row-reverse">
+            <MyButton className="button1" >...</MyButton>
+            <MyInput placeholder={"Файл БД моделей"} style={{width: "100%"}}></MyInput>
+             </div>
+                
                 <SettingsItem u={"Трекер глаз"} button={"Настройка"}></SettingsItem>
                 <SettingsItem u={"Резерв внимания"} button={"Настройка"}></SettingsItem>
                 <SettingsItem u={"Энцефалограф"} button={"Настройка"}></SettingsItem>
@@ -53,8 +101,11 @@ const TemplateDetails = ({template, ...props}) => {
 
 
             <div className="template-rightmodule">
-            <ButtonWithInput button={"..."} placeholder={"AIVA"} className="input-row-reverse"></ButtonWithInput>
 
+            <div className="input-row-reverse">
+            <MyButton className="button1" >...</MyButton>
+            <MyInput placeholder={"AIVA"} style={{width: "100%"}}></MyInput>
+        </div>
             <SpanWithSelect label={"Выбранный набор моделей:"}></SpanWithSelect>
             <SpanWithSelect label={"Выбранный набор НУ:"}></SpanWithSelect>
                 
@@ -66,6 +117,13 @@ const TemplateDetails = ({template, ...props}) => {
                 </div>
 
             </div>
+
+                <MyModal active={removeTemplate} setActive={setRemoveTemplate}>
+                    <h3>Вы точно хотите удалить шаблон {moduleTemplateToRemove}?</h3>
+                    <MyButton onClick={handleRemoveTemplate}>ОК</MyButton>
+                    <MyButton onClick={handleCancelRemoveTemplate}>Отмена</MyButton>
+                </MyModal>
+
             </div>
     );
 }

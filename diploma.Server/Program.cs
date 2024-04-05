@@ -11,12 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddControllersWithViews()
-    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+string connectionstring = builder.Configuration.GetConnectionString("POSTGRESQL");
 
 builder.Services.AddDbContext<AirplanesDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("POSTGRESQL")));
+    options.UseNpgsql(connectionstring));
+
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddTransient<IRepository<Project>, ProjectRepository>();
 builder.Services.AddTransient<IRepository<Version>, VersionRepository>();
